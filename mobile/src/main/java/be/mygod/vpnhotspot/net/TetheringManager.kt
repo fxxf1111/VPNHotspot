@@ -7,7 +7,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
-import android.content.pm.ResolveInfo
 import android.net.ConnectivityManager
 import android.net.Network
 import android.os.Build
@@ -468,6 +467,16 @@ object TetheringManager {
         fun onTetheredInterfacesChanged(interfaces: List<String?>) {}
 
         /**
+         * Called when there was a change in the list of local-only interfaces.
+         *
+         * This will be called immediately after the callback is registered, and may be called
+         * multiple times later upon changes.
+         * @param interfaces The list of 0 or more String of active local-only interface names.
+         */
+        @TargetApi(31)
+        fun onLocalOnlyInterfacesChanged(interfaces: List<String?>) {}
+
+        /**
          * Called when an error occurred configuring tethering.
          *
          * This will be called immediately after the callback is registered if the latest status
@@ -543,6 +552,7 @@ object TetheringManager {
                         @Suppress("NAME_SHADOWING")
                         val callback = reference.get()
                         val noArgs = args?.size ?: 0
+                        Timber.w("TetheringEventCallback ${method.name}")
                         return when (val name = method.name) {
                             "onTetheringSupported" -> {
                                 if (noArgs != 1) Timber.w("Unexpected args for $name: $args")
@@ -565,6 +575,11 @@ object TetheringManager {
                                 if (noArgs != 1) Timber.w("Unexpected args for $name: $args")
                                 @Suppress("UNCHECKED_CAST")
                                 callback?.onTetheredInterfacesChanged(args!![0] as List<String?>)
+                            }
+                            "onLocalOnlyInterfacesChanged" -> {
+                                if (noArgs != 1) Timber.w("Unexpected args for $name: $args")
+                                @Suppress("UNCHECKED_CAST")
+                                callback?.onLocalOnlyInterfacesChanged(args!![0] as List<String?>)
                             }
                             "onError" -> {
                                 if (noArgs != 2) Timber.w("Unexpected args for $name: $args")

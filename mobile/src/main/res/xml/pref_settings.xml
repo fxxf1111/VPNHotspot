@@ -96,7 +96,7 @@
         <Preference
             app:key="misc.licenses"
             app:icon="@drawable/ic_action_code"
-            app:title="@string/oss_license_title"
-            app:summary="@string/preferences_license_summary"/>
+            app:title="null"
+            app:summary="null"/>
     </PreferenceCategory>
 </PreferenceScreen>

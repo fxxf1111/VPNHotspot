@@ -1,8 +1,8 @@
 plugins {
     id("com.android.application")
-    id("com.google.android.gms.oss-licenses-plugin")
-    id("com.google.gms.google-services")
-    id("com.google.firebase.crashlytics")
+//    id("com.google.android.gms.oss-licenses-plugin")
+//    id("com.google.gms.google-services")
+//    id("com.google.firebase.crashlytics")
     kotlin("android")
     kotlin("kapt")
     id("kotlin-parcelize")
@@ -23,7 +23,7 @@ android {
         applicationId = "be.mygod.vpnhotspot"
         minSdk = 21
         this.targetSdk = targetSdk
-        resourceConfigurations.addAll(arrayOf("it", "ru", "zh-rCN", "zh-rTW"))
+        resourceConfigurations.addAll(arrayOf("zh-rCN"))
         versionCode = 261
         versionName = "2.11.8"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -39,6 +39,14 @@ android {
         dataBinding = true
         viewBinding = true
     }
+    signingConfigs {
+        register("release"){
+            storeFile =file("TestKey.jks")
+            storePassword = "123321"
+            keyAlias = "Test"
+            keyPassword = "123321"
+        }
+    }
     buildTypes {
         getByName("debug") {
             isPseudoLocalesEnabled = true
@@ -47,6 +55,7 @@ android {
             isShrinkResources = true
             isMinifyEnabled = true
             proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
+            signingConfig = signingConfigs.getByName("release")
         }
     }
     packagingOptions.resources.excludes.add("**/*.kotlin_*")
@@ -82,10 +91,10 @@ dependencies {
     implementation("androidx.room:room-ktx:$roomVersion")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
     implementation("com.android.billingclient:billing-ktx:4.0.0")
-    implementation("com.google.android.gms:play-services-oss-licenses:17.0.0")
+//    implementation("com.google.android.gms:play-services-oss-licenses:17.0.0")
     implementation("com.google.android.material:material:1.4.0-rc01")
-    implementation("com.google.firebase:firebase-analytics-ktx:19.0.0")
-    implementation("com.google.firebase:firebase-crashlytics:18.0.1")
+//    implementation("com.google.firebase:firebase-analytics-ktx:19.0.0")
+//    implementation("com.google.firebase:firebase-crashlytics:18.0.1")
     implementation("com.google.zxing:core:3.4.1")
     implementation("com.jakewharton.timber:timber:4.7.1")
     implementation("com.linkedin.dexmaker:dexmaker:2.28.1")
